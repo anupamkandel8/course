@@ -1,5 +1,32 @@
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from "next/server";
+import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
+import { connectDB } from "@/db";
+import Admin from "@/app/models/adminModel";
 
-export async function GET() {
-    return NextResponse.json({ message: 'hello world' });
+connectDB();
+
+export async function POST(req: NextRequest) {
+  const { username, password } = await req.json();
+
+  // Find admin by username
+  const admin = await Admin.findOne({ username });
+  if (!admin) {
+    return NextResponse.json({ error: "Invalid credentials" }, { status: 401 });
+  }
+
+  // Compare password
+  const isMatch = await bcrypt.compare(password, admin.password);
+  if (!isMatch) {
+    return NextResponse.json({ error: "Invalid credentials" }, { status: 401 });
+  }
+
+  // Generate JWT token
+  const token = jwt.sign(
+    { adminId: admin._id, username: admin.username },
+    process.env.JWT_SECRET!,
+    { expiresIn: "1h" }
+  );
+
+  return NextResponse.json({ token });
 }
