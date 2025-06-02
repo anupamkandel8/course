@@ -28,5 +28,8 @@ export async function POST(req: NextRequest) {
     { expiresIn: "1h" }
   );
 
-  return NextResponse.json({ token });
+  return NextResponse.json(
+    { message: "Login successful", token },
+    { status: 200 }
+  );
 }
