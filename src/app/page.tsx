@@ -1,12 +1,30 @@
 "use client";
 
-import React from "react";
+import React, { useEffect } from "react";
 import { useRouter } from "next/navigation";
 
 export default function Home() {
   const router = useRouter();
+  
+  useEffect(() => {
+    const checkToken = async () => {
+      try {
+        const res = await fetch("/api/admin/login", { credentials: "include" });
+        console.log("Checking token:", res);
+        if (res.ok) {
+          const data = await res.json();
+          if (data.adminToken) {
+            router.push("/admin/profile");
+          }
+        }
+      } catch (e) {
+        // handle error silently
+      }
+    };
+    checkToken();
+  }, [router]);
 
-  return (
+    return (
     <>
       <h1>Welcome to Future of Learning</h1>
       <button onClick={() => router.push("/admin/signup")}>Admin Signup</button>

@@ -5,6 +5,7 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
 connectDB();
+let adminToken
 
 const JWT_SECRET = process.env.JWT_SECRET || "your_jwt_secret"; // Use env var in production
 
@@ -36,28 +37,23 @@ export async function POST(req: NextRequest) {
       const newAdmin = new Admin({ username, password: hashedPassword });
       await newAdmin.save();
 
-      // Generate JWT adminToken
-      const adminToken = jwt.sign(
-        { id: newAdmin._id, username: newAdmin.username },
-        JWT_SECRET,
-        { expiresIn: "1h" }
-      );
-      const response = NextResponse.json(
-        { message: "Signup successful", adminToken },
+     
+      return NextResponse.json(
+        { message: "Admin created successfully." },
         { status: 201 }
       );
-      response.cookies.set("adminToken", adminToken, {
-        httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
-        sameSite: "lax",
-        path: "/",
-        maxAge: 60 * 60, // 1 hour
-      });
-      return response;
     } catch (error) {
         return NextResponse.json(
             { message: "Server error.", error: (error as Error).message },
             { status: 500 }
         );
     }
+}
+
+export async function GET(req: NextRequest) {
+    const adminToken = req.cookies.get("adminToken")?.value;
+    if (!adminToken) {
+        return NextResponse.json({ error: "No admin token found" }, { status: 401 });
+    }
+    return NextResponse.json({ adminToken }, { status: 200 });
 }

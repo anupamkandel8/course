@@ -6,6 +6,8 @@ import Admin from "@/app/models/adminModel";
 
 connectDB();
 
+let adminToken
+
 export async function POST(req: NextRequest) {
   const { username, password } = await req.json();
 
@@ -22,7 +24,7 @@ export async function POST(req: NextRequest) {
   }
 
   // Generate JWT adminToken
-  const adminToken = jwt.sign(
+   adminToken = jwt.sign(
     { adminId: admin._id, username: admin.username },
     process.env.JWT_SECRET!,
     { expiresIn: "1h" }
@@ -41,4 +43,13 @@ export async function POST(req: NextRequest) {
     maxAge: 60 * 60, // 1 hour
   });
   return response;
+}
+
+
+export async function GET(req: NextRequest) {
+  const adminToken = req.cookies.get("adminToken")?.value;
+  if (!adminToken) {
+    return NextResponse.json({ error: "No admin token found" }, { status: 401 });
+  }
+  return NextResponse.json({ adminToken }, { status: 200 });
 }
