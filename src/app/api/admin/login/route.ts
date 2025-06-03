@@ -21,19 +21,19 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Invalid credentials" }, { status: 401 });
   }
 
-  // Generate JWT token
-  const token = jwt.sign(
+  // Generate JWT adminToken
+  const adminToken = jwt.sign(
     { adminId: admin._id, username: admin.username },
     process.env.JWT_SECRET!,
     { expiresIn: "1h" }
   );
 
-  // Set token in HTTP-only cookie
+  // Set adminToken in HTTP-only cookie
   const response = NextResponse.json(
-    { message: "Login successful", token },
+    { message: "Login successful", adminToken },
     { status: 200 }
   );
-  response.cookies.set("token", token, {
+  response.cookies.set("adminToken", adminToken, {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
     sameSite: "lax",

@@ -14,20 +14,20 @@ const LoginPage: React.FC = () => {
         e.preventDefault();
         setError('');
         try {
-            const res = await fetch('/api/admin/login', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ username, password }),
-            });
+          const res = await fetch("/api/admin/login", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ username, password }),
+          });
 
-            if (!res.ok) {
-                throw new Error('Invalid credentials');
-            }
+          if (!res.ok) {
+            throw new Error("Invalid credentials");
+          }
 
-            const data = await res.json();
-            // Assume the API returns { token: string }
-            localStorage.setItem('token', data.token);
-            router.push('/admin/profile');
+          //const data = await res.json();
+          // Assume the API returns { adminToken: string }
+         // localStorage.setItem("adminToken", data.adminToken);
+          router.push("/admin/profile");
         } catch (err: any) {
             setError(err.message || 'Login failed');
         }

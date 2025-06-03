@@ -26,8 +26,8 @@ const AdminSignupPage: React.FC = () => {
                 return;
             }
 
-            const { token } = await res.json();
-            localStorage.setItem('token', token);
+            //const { adminToken } = await res.json();
+           // localStorage.setItem("adminToken", adminToken);
             router.push('/admin/profile');
         } catch (err) {
             setError('An error occurred. Please try again.');

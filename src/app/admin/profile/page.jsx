@@ -7,11 +7,11 @@ export default function ProfilePage() {
   const router = useRouter();
 
   const handleLogout = () => {
-    // Clear token from cache
+    // Clear adminToken from cache
     try {
       fetch("/api/admin/logout", { method: "POST" });
     } catch (error) {
-      console.error("Error clearing token:", error);
+      console.error("Error clearing adminToken:", error);
     }
     router.push("/");
     alert("Logged out!");
