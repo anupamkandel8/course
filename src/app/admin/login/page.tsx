@@ -27,7 +27,7 @@ const LoginPage: React.FC = () => {
             const data = await res.json();
             // Assume the API returns { token: string }
             localStorage.setItem('token', data.token);
-            router.push('/admin/dashboard');
+            router.push('/admin/profile');
         } catch (err: any) {
             setError(err.message || 'Login failed');
         }

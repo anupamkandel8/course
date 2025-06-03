@@ -42,10 +42,18 @@ export async function POST(req: NextRequest) {
             JWT_SECRET,
             { expiresIn: "1h" }
         );
-        return NextResponse.json(
-            { message: "Admin created successfully.", token },
+        const response = NextResponse.json(
+            { message: "Signup successful", token },
             { status: 201 }
         );
+        response.cookies.set("token", token, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === "production",
+            sameSite: "lax",
+            path: "/",
+            maxAge: 60 * 60, // 1 hour
+        });
+        return response;
     } catch (error) {
         return NextResponse.json(
             { message: "Server error.", error: (error as Error).message },

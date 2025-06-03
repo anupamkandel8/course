@@ -28,8 +28,17 @@ export async function POST(req: NextRequest) {
     { expiresIn: "1h" }
   );
 
-  return NextResponse.json(
+  // Set token in HTTP-only cookie
+  const response = NextResponse.json(
     { message: "Login successful", token },
     { status: 200 }
   );
+  response.cookies.set("token", token, {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "lax",
+    path: "/",
+    maxAge: 60 * 60, // 1 hour
+  });
+  return response;
 }
