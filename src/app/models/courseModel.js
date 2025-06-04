@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 const courseSchema = new mongoose.Schema({
-    name: {
+    title: {
         type: String,
         required: true,
         trim: true
@@ -12,4 +12,4 @@ const courseSchema = new mongoose.Schema({
     }
 });
 
-module.exports = mongoose.model('Course', courseSchema);
+module.exports = mongoose.models.Course || mongoose.model('Course', courseSchema);
