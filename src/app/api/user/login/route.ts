@@ -2,40 +2,41 @@ import { NextRequest, NextResponse } from "next/server";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { connectDB } from "@/db";
-import Admin from "@/models/adminModel";
+import User from "@/models/userModel.js";
 
-connectDB();
-
-let adminToken
+let userToken;
 
 export async function POST(req: NextRequest) {
+  await connectDB();
   const { username, password } = await req.json();
 
-  // Find admin by username
-  const admin = await Admin.findOne({ username });
-  if (!admin) {
+  // Find user by username
+  const user = await User.findOne({ username });
+  if (!user) {
     return NextResponse.json({ error: "Invalid credentials" }, { status: 401 });
   }
 
   // Compare password
-  const isMatch = await bcrypt.compare(password, admin.password);
+  const isMatch = await bcrypt.compare(password, user.password);
   if (!isMatch) {
     return NextResponse.json({ error: "Invalid credentials" }, { status: 401 });
   }
 
-  // Generate JWT adminToken
-   adminToken = jwt.sign(
-    { adminId: admin._id, username: admin.username },
+  // Generate JWT userToken
+  userToken = jwt.sign(
+    { userId: user._id, username: user.username },
     process.env.JWT_SECRET!,
     { expiresIn: "1h" }
   );
 
-  // Set adminToken in HTTP-only cookie
+  // Set userToken in HTTP-only cookie
   const response = NextResponse.json(
-    { message: "Login successful", adminToken },
+    { message: "Login successful" },
     { status: 200 }
   );
-  response.cookies.set("adminToken", adminToken, {
+
+  // Set the cookie with appropriate options
+  response.cookies.set("userToken", userToken, {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
     sameSite: "lax",
@@ -45,11 +46,10 @@ export async function POST(req: NextRequest) {
   return response;
 }
 
-
 export async function GET(req: NextRequest) {
-  const adminToken = req.cookies.get("adminToken")?.value;
-  if (!adminToken) {
-    return NextResponse.json({ error: "No admin token found" }, { status: 401 });
+  const userToken = req.cookies.get("userToken")?.value;
+  if (!userToken) {
+    return NextResponse.json({ error: "No user token found" }, { status: 401 });
   }
-  return NextResponse.json({ adminToken }, { status: 200 });
+  return NextResponse.json({ userToken }, { status: 200 });
 }

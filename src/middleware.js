@@ -1,16 +1,34 @@
 import { NextResponse } from "next/server";
 
+
 export async function middleware(req) {
   const adminToken = req.cookies.get("adminToken")?.value;
+  const userToken = req.cookies.get("userToken")?.value;
+  const { pathname } = req.nextUrl;
 
-  if (!adminToken) {
-    return NextResponse.redirect(new URL("/", req.url));
-  } else {
-    return NextResponse.next();
+  if (
+    pathname.startsWith("/admin") &&
+    !pathname.startsWith("/admin/login") &&
+    !pathname.startsWith("/admin/signup")
+  ) {
+    if (!adminToken) {
+      return NextResponse.redirect(new URL("/", req.url));
+    } else {
+      return NextResponse.next();
+    }
+  } else if (
+    pathname.startsWith("/user") &&
+    !pathname.startsWith("/user/login") &&
+    !pathname.startsWith("/user/signup")
+  ) {
+    if (!userToken) {
+      return NextResponse.redirect(new URL("/", req.url));
+    } else {
+      return NextResponse.next();
+    }
   }
 }
 
 export const config = {
-  //website that needs middleware
-  matcher: ["/admin/profile"],
+  matcher: "/:path*",
 };

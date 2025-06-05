@@ -1,12 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
-import Admin from "@/models/adminModel";
+import User from "@/models/userModel";
 import { connectDB } from "@/db";
 import bcrypt from "bcrypt";
 
 connectDB();
-let adminToken;
-
-const JWT_SECRET = process.env.JWT_SECRET || "your_jwt_secret"; // Use env var in production
 
 export async function POST(req: NextRequest) {
   try {
@@ -19,11 +16,11 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // Check if admin already exists
-    const existingAdmin = await Admin.findOne({ username });
-    if (existingAdmin) {
+    // Check if user already exists
+    const existingUser = await User.findOne({ username });
+    if (existingUser) {
       return NextResponse.json(
-        { message: "Admin already exists." },
+        { message: "User already exists." },
         { status: 409 }
       );
     }
@@ -32,12 +29,12 @@ export async function POST(req: NextRequest) {
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
 
-    // Create new admin
-    const newAdmin = new Admin({ username, password: hashedPassword });
-    await newAdmin.save();
+    // Create new user
+    const newUser = new User({ username, password: hashedPassword });
+    await newUser.save();
 
     return NextResponse.json(
-      { message: "Admin created successfully." },
+      { message: "User created successfully." },
       { status: 201 }
     );
   } catch (error) {
@@ -46,15 +43,4 @@ export async function POST(req: NextRequest) {
       { status: 500 }
     );
   }
-}
-
-export async function GET(req: NextRequest) {
-  const adminToken = req.cookies.get("adminToken")?.value;
-  if (!adminToken) {
-    return NextResponse.json(
-      { error: "No admin token found" },
-      { status: 401 }
-    );
-  }
-  return NextResponse.json({ adminToken }, { status: 200 });
 }

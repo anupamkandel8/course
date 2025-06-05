@@ -10,7 +10,7 @@ export default function ProfilePage() {
 
   useEffect(() => {
     
-    fetch("/api/admin/allCourses")
+    fetch("/api/user/allCourses")
       .then((res) => res.json())
       .then((data) => {
         setCourses(data.returnedCourses || []);
@@ -20,11 +20,11 @@ export default function ProfilePage() {
   }, []);
 
   const handleLogout = () => {
-    // Clear adminToken from cache
+    // Clear userToken from cache
     try {
-      fetch("/api/admin/logout", { method: "POST" });
+      fetch("/api/user/logout", { method: "POST" });
     } catch (error) {
-      console.error("Error clearing adminToken:", error);
+      console.error("Error clearing userToken:", error);
     }
     router.push("/");
     alert("Logged out!");
@@ -32,9 +32,9 @@ export default function ProfilePage() {
 
   return (
     <div style={{ padding: "2rem", textAlign: "center" }}>
-      <h1>Welcome admin</h1>
+      <h1>Welcome user</h1>
       <button
-        onClick={() => router.push("/admin/addCourse")}
+        onClick={() => router.push("/user/addCourse")}
         style={{ marginTop: "1rem", padding: "0.5rem 1rem" }}
       >
         Add Course
