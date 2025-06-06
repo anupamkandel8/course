@@ -14,6 +14,5 @@ export async function tokenToName(userType: string) {
     }
 
     const decoded: any = jwt.verify(userToken, process.env.JWT_SECRET!);
-    console.log("Decoded userToken from buyCourse route:", decoded);
 return decoded
 }

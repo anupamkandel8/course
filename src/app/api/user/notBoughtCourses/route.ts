@@ -9,7 +9,7 @@ export async function GET(req: NextRequest) {
   try {
     // Decode token (assumes tokenToName is extracting from headers/cookies)
     const decoded = await tokenToName("user");
-    const username = decoded.username || 'user'; //come here
+    const username = decoded.username;
 
     // Find user
     const user = await User.findOne({ username });
@@ -18,11 +18,15 @@ export async function GET(req: NextRequest) {
     }
 
     // Fetch courses bought by the user
-    const courses = await course.find({ _id: { $in: user.courses } });
+    const courses = await course.find({ _id: { $nin: user.courses } });
 
     return NextResponse.json({
       message: "Courses fetched successfully",
-      courses,
+      courses: courses.map((course) => ({
+        id: course._id,
+        title: course.title,
+        image: course.image,
+      })),
     });
   } catch (error) {
     return NextResponse.json(

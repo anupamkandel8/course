@@ -10,7 +10,6 @@ export default function Home() {
     const checkToken = async () => {
       try {
         const res = await fetch("/api/admin/login", { credentials: "include" });
-        console.log("Checking token:", res);
         if (res.ok) {
           const data = await res.json();
           if (data.adminToken) {

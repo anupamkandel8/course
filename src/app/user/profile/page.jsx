@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
 export default function ProfilePage() {
@@ -10,10 +10,10 @@ export default function ProfilePage() {
 
   useEffect(() => {
     
-    fetch("/api/user/allCourses")
+    fetch("/api/user/boughtCourses" )
       .then((res) => res.json())
       .then((data) => {
-        setCourses(data.returnedCourses || []);
+        setCourses(data.courses || []);
         setMounted(true);
       })
       .catch((err) => console.error("Error fetching courses:", err));
@@ -34,10 +34,10 @@ export default function ProfilePage() {
     <div style={{ padding: "2rem", textAlign: "center" }}>
       <h1>Welcome user</h1>
       <button
-        onClick={() => router.push("/user/addCourse")}
+        onClick={() => router.push("/user/buyCourse")}
         style={{ marginTop: "1rem", padding: "0.5rem 1rem" }}
       >
-        Add Course
+        Buy Course
       </button>
       <button
         onClick={handleLogout}
