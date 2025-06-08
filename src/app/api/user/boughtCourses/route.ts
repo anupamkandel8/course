@@ -23,7 +23,9 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({
       message: "Courses fetched successfully",
       courses,
-    });
+      user: {
+        name: user.username,
+    }});
   } catch (error) {
     return NextResponse.json(
       { error: "Internal server error" },

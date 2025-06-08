@@ -2,6 +2,16 @@
 
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
+import {
+  Box,
+  Button,
+  TextField,
+  Typography,
+  Paper,
+  Link as MuiLink,
+  Alert,
+} from "@mui/material";
+import Link from "next/link";
 
 const LoginPage: React.FC = () => {
   const [username, setUsername] = useState("");
@@ -29,47 +39,79 @@ const LoginPage: React.FC = () => {
   };
 
   return (
-    <div style={{ maxWidth: 400, margin: "auto", padding: "2rem" }}>
-      <h2>Login</h2>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label>
-            Username:
-            <input
-              type="text"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-              required
-              autoFocus
-            />
-          </label>
-        </div>
-        <div style={{ marginTop: 12 }}>
-          <label>
-            Password:
-            <input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            />
-          </label>
-        </div>
-        {error && <div style={{ color: "red", marginTop: 12 }}>{error}</div>}
-        <button type="submit" style={{ marginTop: 16 }}>
-          Login
-        </button>
-        <div style={{ marginTop: 16 }}>
-          <span>Don't have an account? </span>
-          <a
-            href="/user/signup"
-            style={{ color: "#0070f3", textDecoration: "underline" }}
+    <Box className="flex items-center justify-center min-h-screen bg-gradient-to-br from-blue-50 to-blue-100">
+      <Paper
+        elevation={6}
+        className="w-full max-w-md p-8"
+        sx={{
+          borderRadius: 3,
+          boxShadow: 6,
+          bgcolor: "background.paper",
+        }}
+      >
+        <Typography
+          variant="h4"
+          component="h2"
+          className="font-bold text-center mb-8 text-gray-800"
+        >
+          User Login
+        </Typography>
+        <form onSubmit={handleSubmit} className="space-y-6">
+          <TextField
+            style={{ marginTop: "8px", marginBottom: "8px" }}
+            label="Username"
+            variant="outlined"
+            fullWidth
+            required
+            autoFocus
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            className="bg-white"
+          />
+          <TextField
+            style={{ marginTop: "8px", marginBottom: "8px" }}
+            label="Password"
+            type="password"
+            variant="outlined"
+            fullWidth
+            required
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            className="bg-white"
+          />
+          {error && (
+            <Alert severity="error" className="mt-2">
+              {error}
+            </Alert>
+          )}
+          <Button
+            type="submit"
+            variant="contained"
+            color="primary"
+            fullWidth
+            size="large"
+            className="font-semibold"
+            sx={{ mt: 2, py: 1.5 }}
           >
-            Sign up
-          </a>
-        </div>
-      </form>
-    </div>
+            Login
+          </Button>
+        </form>
+        <Box className="mt-6 text-center">
+          <Typography variant="body2" className="text-gray-600">
+            Don't have an account?{" "}
+            <MuiLink
+              component={Link}
+              href="/user/signup"
+              underline="hover"
+              color="primary"
+              className="font-medium"
+            >
+              Sign up
+            </MuiLink>
+          </Typography>
+        </Box>
+      </Paper>
+    </Box>
   );
 };
 

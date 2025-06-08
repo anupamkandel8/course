@@ -2,6 +2,19 @@
 
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import {
+  Box,
+  Button,
+  Typography,
+  Card,
+  CardMedia,
+  CardContent,
+  Grid,
+  Paper,
+  AppBar,
+  Toolbar,
+  Container,
+} from "@mui/material";
 
 export default function ProfilePage() {
   const router = useRouter();
@@ -9,7 +22,6 @@ export default function ProfilePage() {
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    
     fetch("/api/admin/allCourses")
       .then((res) => res.json())
       .then((data) => {
@@ -20,7 +32,6 @@ export default function ProfilePage() {
   }, []);
 
   const handleLogout = () => {
-    // Clear adminToken from cache
     try {
       fetch("/api/admin/logout", { method: "POST" });
     } catch (error) {
@@ -31,57 +42,82 @@ export default function ProfilePage() {
   };
 
   return (
-    <div style={{ padding: "2rem", textAlign: "center" }}>
-      <h1>Welcome admin</h1>
-      <button
-        onClick={() => router.push("/admin/addCourse")}
-        style={{ marginTop: "1rem", padding: "0.5rem 1rem" }}
-      >
-        Add Course
-      </button>
-      <button
-        onClick={handleLogout}
-        style={{ marginTop: "1rem", padding: "0.5rem 1rem" }}
-      >
-        Logout
-      </button>
-      <div style={{ marginTop: "2rem" }}>
-        <h2>All Courses</h2>
-        {mounted && (
-          <div
-            style={{
-              display: "flex",
-              flexWrap: "wrap",
-              gap: "1rem",
-              justifyContent: "center",
-            }}
+    <Box sx={{ minHeight: "100vh", bgcolor: "background.default" }}>
+      <AppBar position="static" color="primary" elevation={2}>
+        <Toolbar>
+          <Typography variant="h6" sx={{ flexGrow: 1 }}>
+            Welcom Admin
+          </Typography>
+          <Button
+            color="inherit"
+            onClick={() => router.push("/admin/addCourse")}
           >
-            {courses.map((course) => {
-              return (
-                <div
-                  key={course.id}
-                  style={{
-                    border: "1px solid #ccc",
-                    padding: "1rem",
-                    width: "200px",
+            Add Course
+          </Button>
+          <Button color="inherit" onClick={handleLogout}>
+            Logout
+          </Button>
+        </Toolbar>
+      </AppBar>
+      <Container maxWidth="md" sx={{ py: 5 }}>
+        <Typography variant="h5" fontWeight={600} mb={2} color="primary" >
+          All Courses
+        </Typography>
+        {mounted && (
+          <Grid container spacing={3} justifyContent="left">
+            {courses.map((course) => (
+              <Grid item xs={12} sm={6} md={4} key={course._id}>
+                <Card
+                  className="transition-shadow hover:shadow-xl"
+                  sx={{
+                    borderRadius: 3,
+                    boxShadow: 3,
+                    bgcolor: "background.default",
+                    width: 260,
+                    height: 220,
+                    display: "flex",
+                    flexDirection: "column",
+                    justifyContent: "flex-start",
+                    alignItems: "stretch",
                   }}
                 >
-                  <img
-                    src={course.image}
+                  <CardMedia
+                    component="img"
+                    height="100"
+                    image={course.image}
                     alt={course.title}
-                    style={{
-                      width: "100%",
-                      height: "120px",
+                    sx={{
                       objectFit: "cover",
+                      minHeight: 180,
+                      maxHeight: 200,
+                      width: "100%",
                     }}
                   />
-                  <h3 style={{ marginTop: "0.5rem" }}>{course.title}</h3>
-                </div>
-              );
-            })}
-          </div>
+                  <CardContent
+                    sx={{
+                      flexGrow: 1,
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      padding: 0,
+                    }}
+                  >
+                    <Typography
+                      variant="h6"
+                      className="font-bold text-gray-800"
+                      gutterBottom
+                      align="center"
+                      sx={{ width: "100%" }}
+                    >
+                      {course.title}
+                    </Typography>
+                  </CardContent>
+                </Card>
+              </Grid>
+            ))}
+          </Grid>
         )}
-      </div>
-    </div>
+      </Container>
+    </Box>
   );
 }

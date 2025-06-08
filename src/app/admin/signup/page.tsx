@@ -2,7 +2,14 @@
 
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
-
+import {
+    Box,
+    Button,
+    TextField,
+    Typography,
+    Paper,
+    Alert,
+} from '@mui/material';
 
 const AdminSignupPage: React.FC = () => {
     const [username, setUsername] = useState('');
@@ -33,38 +40,64 @@ const AdminSignupPage: React.FC = () => {
     };
 
     return (
-        <div style={{ maxWidth: 400, margin: 'auto', padding: 24 }}>
-            <h2>Sign Up</h2>
-            <form onSubmit={handleSubmit}>
-                <div>
-                    <label>
-                        Username:
-                        <input
-                            type="text"
-                            value={username}
-                            onChange={e => setUsername(e.target.value)}
-                            required
-                            autoComplete="username"
-                        />
-                    </label>
-                </div>
-                <div style={{ marginTop: 12 }}>
-                    <label>
-                        Password:
-                        <input
-                            type="password"
-                            value={password}
-                            onChange={e => setPassword(e.target.value)}
-                            required
-                            autoComplete="new-password"
-                        />
-                    </label>
-                </div>
-                {error && <div style={{ color: 'red', marginTop: 12 }}>{error}</div>}
-                <button type="submit" style={{ marginTop: 16 }}>Sign Up</button>
-            </form>
-            
-        </div>
+        <Box
+            minHeight="100vh"
+            display="flex"
+            alignItems="center"
+            justifyContent="center"
+            bgcolor="background.default"
+        >
+            <Paper
+                elevation={4}
+                sx={{
+                    p: 4,
+                    maxWidth: 400,
+                    width: '100%',
+                    borderRadius: 3,
+                }}
+            >
+                <Typography variant="h4" fontWeight={700} textAlign="center" mb={3}>
+                    Admin Sign Up
+                </Typography>
+                <form onSubmit={handleSubmit} noValidate>
+                    <TextField
+                        label="Username"
+                        variant="outlined"
+                        fullWidth
+                        margin="normal"
+                        value={username}
+                        onChange={e => setUsername(e.target.value)}
+                        required
+                        autoComplete="username"
+                    />
+                    <TextField
+                        label="Password"
+                        variant="outlined"
+                        fullWidth
+                        margin="normal"
+                        type="password"
+                        value={password}
+                        onChange={e => setPassword(e.target.value)}
+                        required
+                        autoComplete="new-password"
+                    />
+                    {error && (
+                        <Alert severity="error" sx={{ mt: 2 }}>
+                            {error}
+                        </Alert>
+                    )}
+                    <Button
+                        type="submit"
+                        variant="contained"
+                        color="primary"
+                        fullWidth
+                        sx={{ mt: 3, py: 1.5, fontWeight: 600, borderRadius: 2 }}
+                    >
+                        Sign Up
+                    </Button>
+                </form>
+            </Paper>
+        </Box>
     );
 };
 

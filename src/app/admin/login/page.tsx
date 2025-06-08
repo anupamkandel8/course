@@ -2,6 +2,15 @@
 
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
+import {
+  Box,
+  Button,
+  TextField,
+  Typography,
+  Paper,
+  Link,
+  Stack,
+} from "@mui/material";
 
 const LoginPage: React.FC = () => {
   const [username, setUsername] = useState("");
@@ -29,47 +38,64 @@ const LoginPage: React.FC = () => {
   };
 
   return (
-    <div style={{ maxWidth: 400, margin: "auto", padding: "2rem" }}>
-      <h2>Admin Login</h2>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label>
-            Username:
-            <input
-              type="text"
+    <Box
+      minHeight="100vh"
+      display="flex"
+      alignItems="center"
+      justifyContent="center"
+      bgcolor="background.default"
+    >
+      <Paper elevation={4} sx={{ p: 5, maxWidth: 400, width: "100%" }}>
+        <Typography variant="h4" fontWeight={700} mb={3} textAlign="center">
+          Admin Login
+        </Typography>
+        <Box component="form" onSubmit={handleSubmit} noValidate>
+          <Stack spacing={2}>
+            <TextField
+              label="Username"
+              variant="outlined"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
               required
               autoFocus
+              fullWidth
             />
-          </label>
-        </div>
-        <div style={{ marginTop: 12 }}>
-          <label>
-            Password:
-            <input
+            <TextField
+              label="Password"
+              variant="outlined"
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
+              fullWidth
             />
-          </label>
-        </div>
-        {error && <div style={{ color: "red", marginTop: 12 }}>{error}</div>}
-        <button type="submit" style={{ marginTop: 16 }}>
-          Login
-        </button>
-      </form>
-      <div style={{ marginTop: 16 }}>
-        <span>Don't have an admin account? </span>
-        <a
-          href="/user/signup"
-          style={{ color: "#0070f3", textDecoration: "underline" }}
-        >
-          Sign up
-        </a>
-      </div>
-    </div>
+            {error && (
+              <Typography color="error" variant="body2">
+                {error}
+              </Typography>
+            )}
+            <Button
+              type="submit"
+              variant="contained"
+              color="primary"
+              size="large"
+              fullWidth
+              sx={{ mt: 1 }}
+            >
+              Login
+            </Button>
+          </Stack>
+        </Box>
+        <Box mt={3} textAlign="center">
+          <Typography variant="body2">
+            Don't have an admin account?{" "}
+            <Link href="/user/signup" underline="hover" color="primary">
+              Sign up
+            </Link>
+          </Typography>
+        </Box>
+      </Paper>
+    </Box>
   );
 };
 
