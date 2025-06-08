@@ -57,9 +57,10 @@ export default function ProfilePage() {
             }}
           >
             {courses.map((course) => {
+              console.log("Course:", course);
               return (
                 <div
-                  key={course.id}
+                  key={course._id}
                   style={{
                     border: "1px solid #ccc",
                     padding: "1rem",

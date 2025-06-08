@@ -1,6 +1,5 @@
 import { NextResponse } from "next/server";
 
-
 export async function middleware(req) {
   const adminToken = req.cookies.get("adminToken")?.value;
   const userToken = req.cookies.get("userToken")?.value;
@@ -13,9 +12,13 @@ export async function middleware(req) {
   ) {
     if (!adminToken) {
       return NextResponse.redirect(new URL("/", req.url));
-    } else {
+    }
+    // Allow access to admin profile if adminToken exists
+    else {
       return NextResponse.next();
     }
+  } else if (adminToken && pathname === "/") {
+    return NextResponse.redirect(new URL("/admin/profile", req.url));
   } else if (
     pathname.startsWith("/user") &&
     !pathname.startsWith("/user/login") &&
@@ -26,6 +29,8 @@ export async function middleware(req) {
     } else {
       return NextResponse.next();
     }
+  } else if (adminToken && pathname === "/") {
+    return NextResponse.redirect(new URL("/admin/profile", req.url));
   }
 }
 

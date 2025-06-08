@@ -30,7 +30,7 @@ const LoginPage: React.FC = () => {
 
   return (
     <div style={{ maxWidth: 400, margin: "auto", padding: "2rem" }}>
-      <h2>User Login</h2>
+      <h2>Login</h2>
       <form onSubmit={handleSubmit}>
         <div>
           <label>
@@ -59,6 +59,15 @@ const LoginPage: React.FC = () => {
         <button type="submit" style={{ marginTop: 16 }}>
           Login
         </button>
+        <div style={{ marginTop: 16 }}>
+          <span>Don't have an account? </span>
+          <a
+            href="/user/signup"
+            style={{ color: "#0070f3", textDecoration: "underline" }}
+          >
+            Sign up
+          </a>
+        </div>
       </form>
     </div>
   );

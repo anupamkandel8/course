@@ -63,6 +63,7 @@ const AdminSignupPage: React.FC = () => {
                 {error && <div style={{ color: 'red', marginTop: 12 }}>{error}</div>}
                 <button type="submit" style={{ marginTop: 16 }}>Sign Up</button>
             </form>
+            
         </div>
     );
 };

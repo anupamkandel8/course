@@ -60,6 +60,15 @@ const LoginPage: React.FC = () => {
           Login
         </button>
       </form>
+      <div style={{ marginTop: 16 }}>
+        <span>Don't have an admin account? </span>
+        <a
+          href="/user/signup"
+          style={{ color: "#0070f3", textDecoration: "underline" }}
+        >
+          Sign up
+        </a>
+      </div>
     </div>
   );
 };
