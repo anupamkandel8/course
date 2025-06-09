@@ -29,8 +29,8 @@ export async function middleware(req) {
     } else {
       return NextResponse.next();
     }
-  } else if (adminToken && pathname === "/") {
-    return NextResponse.redirect(new URL("/admin/profile", req.url));
+  } else if (userToken && pathname === "/") {
+    return NextResponse.redirect(new URL("/user/profile", req.url));
   }
 }
 

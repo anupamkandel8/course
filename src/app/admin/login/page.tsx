@@ -89,7 +89,7 @@ const LoginPage: React.FC = () => {
         <Box mt={3} textAlign="center">
           <Typography variant="body2">
             Don't have an admin account?{" "}
-            <Link href="/user/signup" underline="hover" color="primary">
+            <Link href="/admin/signup" underline="hover" color="primary">
               Sign up
             </Link>
           </Typography>

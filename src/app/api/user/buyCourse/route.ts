@@ -28,7 +28,7 @@ export async function POST(req: NextRequest) {
       await user.save();
     }
     return NextResponse.json({
-      message: "Course added successfully",
+      message: `Course: ${user.username} added successfully`,
       courses: user.courses,
     });
   } catch (error) {

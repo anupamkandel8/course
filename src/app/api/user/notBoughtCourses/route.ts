@@ -26,6 +26,7 @@ export async function GET(req: NextRequest) {
         id: course._id,
         title: course.title,
         image: course.image,
+        //link will be send only after user buys the course
       })),
     });
   } catch (error) {

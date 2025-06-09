@@ -107,6 +107,10 @@ export default function ProfilePage() {
                         justifyContent: "flex-start",
                         alignItems: "stretch",
                       }}
+                      onClick={() =>
+                        {window.open(course.link, "blank")
+                        console.log(course.link)
+                     } }
                     >
                       <CardMedia
                         component="img"
@@ -117,8 +121,8 @@ export default function ProfilePage() {
                           objectFit: "cover",
                           minHeight: 180,
                           maxHeight: 200,
-                          width: "100%"}
-                        }
+                          width: "100%",
+                        }}
                       />
                       <CardContent
                         sx={{
